@@ -25,7 +25,7 @@ def get_var_name(value):
 def process_content(value):
     # Checking if the variable value corresponds to a variable name. If it does, it will use the
     # corresponding variable's value as the declared variable's value.
-    for obj in re.findall(r'[a-zA-Z]*\.[a-zA-Z]*', value):
+    for obj in re.findall(r'[^ ]*\.[^ ]*', value):
         if not " " in obj:
             value = value.replace(obj, process_property(obj.split(".")[0], obj.split(".")[1]))
     try:
@@ -55,7 +55,28 @@ def process_content(value):
     return value
 
 def process_property(obj, property):
-    return "<OBJ PROPERTY>"
+    if "uppercase" == property:
+        return obj.upper()
+    elif "lowercase" == property:
+        return obj.lower()
+    elif "isnumbers" == property:
+        return str(any(char.isdigit() for char in obj))
+    elif "isletters" == property:
+        return str(any(char.isalpha() for char in obj))
+    elif "capitalize" == property:
+        return obj.capitalize()
+    elif "isuppercase" == property:
+        return str(obj.isupper())
+    elif "islowercase" == property:
+        return str(obj.islower())
+    elif "leftstrip" == property:
+        return obj.lstrip()
+    elif "rightstrip" == property:
+        return obj.rstrip()
+    elif "title" == property:
+        return obj.title()
+    else:
+        return "<OBJ PROPERTY>"
 
 """
 Declaring variables
