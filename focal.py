@@ -1,9 +1,12 @@
-import re
-input = input("")
-variables = [("a", "5")]
+import re, sys
+lines = []
+variables = [("a", "hey there"), ("b", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
 
-passing_cond_statement = ()
+file = open(sys.argv[1], 'r')
+lines = file.readlines()
+
+is_Passing_Condition = True
 
 def error(message):
     print("\033[31mError: " + message+"\033[0m")
@@ -76,47 +79,55 @@ def process_property(obj, property):
     elif "title" == property:
         return obj.title()
     else:
-        return "<OBJ PROPERTY>"
+        return obj+"."+property
 
-"""
-Declaring variables
 
-To-do:
-- Variable concatenation with evaluated argument
-"""
-if "declare" in input.split(" ")[0]:
-    try:
-        assert "=" in input.split(" ")[2]
-    except:
-        error("Invalid syntax when declaring variable (missing '=')")
-    # Getting the variable name and value from the input.
-    input = input.replace("declare", "").lstrip()
-    temp_var_name = input.split(" ")[0]
-    temp_var_value = input.replace(input.split(" ")[0], "").replace("=","", 1).lstrip()
-    # Checking if the variable name already exists. If it does, it will overwrite the value.
-    if any([temp_var_name in tup for tup in variables]):
-        variables[[x for x, y in enumerate(variables) if y[0] == temp_var_name][0]] = (temp_var_name, temp_var_value)
-    else:
-        temp_var_value = process_content(temp_var_value)
-        variables.append((temp_var_name, temp_var_value))
-    print(variables)
-elif "print" in input.split(" ")[0]:
-    try:
-        assert "->" in input.split(" ")[1]
-    except:
-        error("Invalid syntax when printing")
-    print_val = input.split("->")[1].lstrip()
-    print(process_content(print_val))
-# Conditions
-# To-do: - Execute (or not if the condition is false) the next conditional lines
-elif "if" in input.split(" ")[0]:
-    try:
-        assert "(" in input and ")" in input and "{" in input
-    except:
-        error("Invalid conditional statement")
-    # Getting the condition and the code to execute if the condition is true.
-    args = []
-    for arg in input.replace("if","").replace("(","").replace(")","").replace("{","").replace("="," ").lstrip().rstrip().split(" "):
-        args.append(process_content(arg.lstrip().rstrip()))
-    if args[0] == args[1]:
-        print("YUP")
+for input in lines:
+    """
+    Declaring variables
+
+    To-do:
+    - Variable concatenation with evaluated argument
+    """
+    if is_Passing_Condition == True or "}" == input[0]:
+        if "declare" in input.split(" ")[0]:
+            try:
+                assert "=" in input.split(" ")[2]
+            except:
+                error("Invalid syntax when declaring variable (missing '=')")
+            # Getting the variable name and value from the input.
+            input = input.replace("declare", "").lstrip()
+            temp_var_name = input.split(" ")[0]
+            temp_var_value = input.replace(input.split(" ")[0], "").replace("=","", 1).lstrip()
+            # Checking if the variable name already exists. If it does, it will overwrite the value.
+            if any([temp_var_name in tup for tup in variables]):
+                variables[[x for x, y in enumerate(variables) if y[0] == temp_var_name][0]] = (temp_var_name, temp_var_value)
+            else:
+                temp_var_value = process_content(temp_var_value)
+                variables.append((temp_var_name, temp_var_value))
+        elif "print" in input.split(" ")[0]:
+            try:
+                assert "->" in input.split(" ")[1]
+            except:
+                error("Invalid syntax when printing")
+            print_val = input.split("->")[1].lstrip()
+            print(process_content(print_val))
+        elif "}" == input[0]:
+            global is_passing_condition
+            is_Passing_Condition = True
+        # Conditions
+        # To-do: - Execute (or not if the condition is false) the next conditional lines
+        elif "if" in input.split(" ")[0]:
+            try:
+                assert "(" in input and ")" in input and "{" in input
+            except:
+                error("Invalid conditional statement")
+            # Getting the condition and the code to execute if the condition is true.
+            args = []
+            for arg in input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("="):
+                if arg:
+                    args.append(process_content(arg.lstrip().rstrip()))
+            if str(args[0]) == str(args[1]):
+                is_passing_condition = False
+            else:
+                is_Passing_Condition = False

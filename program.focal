@@ -1,0 +1,4 @@
+if (b = hell) {
+    print -> cool
+}
+print -> that's awesome
