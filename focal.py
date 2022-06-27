@@ -3,14 +3,20 @@ lines = []
 variables = [("a", "hey there"), ("b", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
 
-file = open(sys.argv[1], 'r')
-lines = file.readlines()
+if len(sys.argv) > 1:
+    file = open(sys.argv[1], 'r')
+    lines = file.readlines()
+else:
+    exit()
+line = 0
 
 is_Passing_Condition = True
 
 def error(message):
-    print("\033[31mError: " + message+"\033[0m")
-    exit(1)
+    print("        \033[1m\033[91m   Focal Error  \033[0m        ")
+    print("At \033[1m\033[92mline "+str(line)+"\033[0m ↓")
+    print('\033[1m'+str(message)+'\033[0m')
+    exit()
 
 
 def get_var_value(name):
@@ -83,6 +89,7 @@ def process_property(obj, property):
 
 
 for input in lines:
+    line += 1
     """
     Declaring variables
 
