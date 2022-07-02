@@ -1,0 +1,20 @@
+name: py
+on:
+  push:
+    paths:
+      - 'focal.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: execute focal script
+        run: |
+          python focal.py program.focal
