@@ -2,8 +2,11 @@
 import re
 import sys
 lines = []
+#Example variables/lists
 variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
+
+
 line = 0
 
 
