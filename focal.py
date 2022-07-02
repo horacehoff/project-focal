@@ -1,14 +1,15 @@
 import re, sys
 lines = []
-variables = [("a", "hey there"), ("b", "hello"), ("c", "hi"), ("d", "how are you?")]
+variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
+line = 0
+
 
 if len(sys.argv) > 1:
     file = open(sys.argv[1], 'r')
     lines = file.readlines()
 else:
     exit()
-line = 0
 
 is_Passing_Condition = True
 
@@ -34,12 +35,13 @@ def get_var_name(value):
 def process_content(value):
     # Checking if the variable value corresponds to a variable name. If it does, it will use the
     # corresponding variable's value as the declared variable's value.
-    for obj in re.findall(r'[^ ]*\.[^ ]*', value):
-        if not " " in obj:
-            value = value.replace(obj, process_property(obj.split(".")[0], obj.split(".")[1]))
+    try:
+        value = [x.replace(x, process_property(x.split(".")[0], x.split(".")[1])) for x in re.findall(r'[^ ]*\.[^ ]*', value) if not " " in x][0]
+    except:
+        pass
     try:
         if any([value in tup for tup in variables]):
-            value = variables[[x for x, y in enumerate(variables) if y[0] == value][0]][1]
+            value = get_var_value(value)
     except:
         pass
     # Checking if there is a plus sign in the variable value. If there is, it will split the
@@ -88,7 +90,7 @@ def process_property(obj, property):
         return obj+"."+property
 
 
-for input in lines:
+for input in [s.lstrip().rstrip() for s in lines]:
     line += 1
     """
     Declaring variables
@@ -97,6 +99,7 @@ for input in lines:
     - Variable concatenation with evaluated argument
     """
     if is_Passing_Condition == True or "}" == input[0]:
+        global is_passing_condition
         if "declare" in input.split(" ")[0]:
             try:
                 assert "=" in input.split(" ")[2]
@@ -120,7 +123,6 @@ for input in lines:
             print_val = input.split("->")[1].lstrip()
             print(process_content(print_val))
         elif "}" == input[0]:
-            global is_passing_condition
             is_Passing_Condition = True
         # Conditions
         # To-do: - Execute (or not if the condition is false) the next conditional lines
@@ -130,11 +132,8 @@ for input in lines:
             except:
                 error("Invalid conditional statement")
             # Getting the condition and the code to execute if the condition is true.
-            args = []
-            for arg in input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("="):
-                if arg:
-                    args.append(process_content(arg.lstrip().rstrip()))
-            if str(args[0]) == str(args[1]):
-                is_passing_condition = False
+            args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("=")
+            if str(process_content(args[0].lstrip().rstrip())) == str(process_content(args[1].lstrip().rstrip())):
+                is_passing_condition = True
             else:
                 is_Passing_Condition = False
