@@ -1,4 +1,4 @@
-name: py
+name: Focal Test Run
 on:
   push:
     paths:
