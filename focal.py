@@ -1,12 +1,7 @@
-# Imports
-import re
-import sys
+import re, sys
 lines = []
-#Example variables/lists
 variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
-
-
 line = 0
 
 
@@ -136,9 +131,17 @@ for input in [s.lstrip().rstrip() for s in lines]:
                 assert "(" in input and ")" in input and "{" in input
             except:
                 error("Invalid conditional statement")
-            # Getting the condition and the code to execute if the condition is true.
-            args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("=")
-            if str(process_content(args[0].lstrip().rstrip())) == str(process_content(args[1].lstrip().rstrip())):
-                is_passing_condition = True
+            if not "!=" in input:
+                # Getting the condition and the code to execute if the condition is true.
+                args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("=")
+                if str(process_content(args[0].lstrip().rstrip())) == str(process_content(args[1].lstrip().rstrip())):
+                    is_passing_condition = True
+                else:
+                    is_Passing_Condition = False
             else:
-                is_Passing_Condition = False
+                # Getting the condition and the code to execute if the condition is true.
+                args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("!=")
+                if str(process_content(args[0].lstrip().rstrip())) != str(process_content(args[1].lstrip().rstrip())):
+                    is_passing_condition = True
+                else:
+                    is_Passing_Condition = False
