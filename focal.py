@@ -1,4 +1,5 @@
-import re, sys
+import re
+import sys
 lines = []
 variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
