@@ -1,5 +1,6 @@
-from pickle import FALSE
-import re, sys
+import re
+import sys
+from tracemalloc import start
 lines = []
 variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
@@ -159,10 +160,29 @@ def execute(lines):
                             error("Invalid syntax when declaring function")
                         function_name = input.replace("function", "").replace("(", " ").replace(")","").replace("{","").lstrip().rstrip().split(" ")[0]
                         is_Declaring_Function = True
-                        
+
+
+
+
+
+
+
+
+def record_exec_time():
+    import time
+    start_time = time.time_ns() / (10 ** 9)
+    execute(["declare a = Hey there", "print -> a","if (a = Hey there) {","print -> 5*7/7*10*67.65*7/7*10*67.6*7/7*10*67.6","}","declare b = testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest", "print -> b"])
+    print("--- %s seconds ---" % (time.time_ns() / (10 ** 9) - start_time))
+
+
+
+
 
 if len(sys.argv) > 1:
-    file = open(sys.argv[1], 'r')
-    execute(file.readlines())
+    if sys.argv[1] == "--test":
+        record_exec_time()
+    else:
+        file = open(sys.argv[1], 'r')
+        execute(file.readlines())
 else:
     exit()
