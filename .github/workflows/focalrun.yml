@@ -17,4 +17,4 @@ jobs:
           python-version: 3.9
       - name: execute focal script
         run: |
-          python focal.py program.focal
+          python focal.py --test
