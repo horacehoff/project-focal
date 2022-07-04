@@ -1,17 +1,15 @@
+from pickle import FALSE
 import re, sys
 lines = []
 variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are you?")]
 lists  = [("example_list", ["value1", "value2"])]
 line = 0
 
+functions = [("exfunction", ["line1", "line2", "line3"])]
 
-if len(sys.argv) > 1:
-    file = open(sys.argv[1], 'r')
-    lines = file.readlines()
-else:
-    exit()
 
 is_Passing_Condition = True
+is_Declaring_Function = False
 
 def error(message):
     print("        \033[1m\033[91m   Focal Error  \033[0m        ")
@@ -90,58 +88,81 @@ def process_property(obj, property):
         return obj+"."+property
 
 
-for input in [s.lstrip().rstrip() for s in lines]:
-    line += 1
-    """
-    Declaring variables
+def execute(lines):
+    global is_Passing_Condition
+    global is_Declaring_Function
+    global line
+    for input in [s.lstrip().rstrip() for s in lines]:
+        
+        line += 1
+        """
+        Declaring variables
 
-    To-do:
-    - Variable concatenation with evaluated argument
-    """
-    if is_Passing_Condition == True or "}" == input[0]:
-        global is_passing_condition
-        if "declare" in input.split(" ")[0]:
-            try:
-                assert "=" in input.split(" ")[2]
-            except:
-                error("Invalid syntax when declaring variable (missing '=')")
-            # Getting the variable name and value from the input.
-            input = input.replace("declare", "").lstrip()
-            temp_var_name = input.split(" ")[0]
-            temp_var_value = input.replace(input.split(" ")[0], "").replace("=","", 1).lstrip()
-            # Checking if the variable name already exists. If it does, it will overwrite the value.
-            if any([temp_var_name in tup for tup in variables]):
-                variables[[x for x, y in enumerate(variables) if y[0] == temp_var_name][0]] = (temp_var_name, temp_var_value)
-            else:
-                temp_var_value = process_content(temp_var_value)
-                variables.append((temp_var_name, temp_var_value))
-        elif "print" in input.split(" ")[0]:
-            try:
-                assert "->" in input.split(" ")[1]
-            except:
-                error("Invalid syntax when printing")
-            print_val = input.split("->")[1].lstrip()
-            print(process_content(print_val))
-        elif "}" == input[0]:
-            is_Passing_Condition = True
-        # Conditions
-        # To-do: - Execute (or not if the condition is false) the next conditional lines
-        elif "if" in input.split(" ")[0]:
-            try:
-                assert "(" in input and ")" in input and "{" in input
-            except:
-                error("Invalid conditional statement")
-            if not "!=" in input:
-                # Getting the condition and the code to execute if the condition is true.
-                args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("=")
-                if str(process_content(args[0].lstrip().rstrip())) == str(process_content(args[1].lstrip().rstrip())):
-                    is_passing_condition = True
-                else:
-                    is_Passing_Condition = False
-            else:
-                # Getting the condition and the code to execute if the condition is true.
-                args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("!=")
-                if str(process_content(args[0].lstrip().rstrip())) != str(process_content(args[1].lstrip().rstrip())):
-                    is_passing_condition = True
-                else:
-                    is_Passing_Condition = False
+        To-do:
+        - Variable concatenation with evaluated argument
+        """
+        if input:
+            if is_Declaring_Function == False or "}" == input[0]:
+                if is_Passing_Condition == True or "}" == input[0]:
+                    if "declare" in input.split(" ")[0]:
+                        try:
+                            assert "=" in input.split(" ")[2]
+                        except:
+                            error("Invalid syntax when declaring variable (missing '=')")
+                        # Getting the variable name and value from the input.
+                        input = input.replace("declare", "").lstrip()
+                        temp_var_name = input.split(" ")[0]
+                        temp_var_value = input.replace(input.split(" ")[0], "").replace("=","", 1).lstrip()
+                        # Checking if the variable name already exists. If it does, it will overwrite the value.
+                        if any([temp_var_name in tup for tup in variables]):
+                            variables[[x for x, y in enumerate(variables) if y[0] == temp_var_name][0]] = (temp_var_name, temp_var_value)
+                        else:
+                            variables.append((temp_var_name, process_content(temp_var_value)))
+                    elif "print" in input.split(" ")[0]:
+                        try:
+                            assert "->" in input.split(" ")[1]
+                        except:
+                            error("Invalid syntax when printing")
+                        print(process_content(input.split("->")[1].lstrip()))
+                    # Closing brackets
+                    # To-Do: - Recognize wether the closing bracket closes a function declaration or a condition
+                    elif "}" == input[0]:
+                        if is_Declaring_Function == True:
+                            is_Declaring_Function = False
+                        else:
+                            is_Passing_Condition = True
+                    # Conditions
+                    # To-do: - Execute (or not if the condition is false) the next conditional lines
+                    elif "if" == input.split(" ")[0]:
+                        try:
+                            assert "(" in input and ")" in input and "{" in input
+                        except:
+                            error("Invalid conditional statement")
+                        if not "!=" in input:
+                            # Getting the condition and the code to execute if the condition is true.
+                            args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("=")
+                            if str(process_content(args[0].lstrip().rstrip())) == str(process_content(args[1].lstrip().rstrip())):
+                                is_Passing_Condition = True
+                            else:
+                                is_Passing_Condition = False
+                        else:
+                            # Getting the condition and the code to execute if the condition is true.
+                            args = input.replace("if","").replace("(","").replace(")","").replace("{","").lstrip().rstrip().split("!=")
+                            if str(process_content(args[0].lstrip().rstrip())) != str(process_content(args[1].lstrip().rstrip())):
+                                is_Passing_Condition = True
+                            else:
+                                is_Passing_Condition = False
+                    elif "function" == input.split(" ")[0]:
+                        try:
+                            assert "(" in input and ")" in input and "{" in input
+                        except:
+                            error("Invalid syntax when declaring function")
+                        function_name = input.replace("function", "").replace("(", " ").replace(")","").replace("{","").lstrip().rstrip().split(" ")[0]
+                        is_Declaring_Function = True
+                        
+
+if len(sys.argv) > 1:
+    file = open(sys.argv[1], 'r')
+    execute(file.readlines())
+else:
+    exit()
