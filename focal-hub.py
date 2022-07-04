@@ -8,9 +8,6 @@ except:
     
 selected = 1
 
-def starter_file():
-    with open('starter.focal', 'w') as f:
-        f.write('declare myvar = Hello World\nprint -> myvar')
 
 def starter_menu():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -51,7 +48,9 @@ def down():
 
 def select():
     if selected == 1:
-        starter_file()
+        with open('starter.focal', 'w') as f:
+            f.write('declare myvar = Hello World\nprint -> myvar')
+        print("[+] Starter file created")
     elif selected == 2:
         print("/!\ WIP feature")
     elif selected == 3:
