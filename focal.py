@@ -6,11 +6,13 @@ variables = [("ab", "hey there"), ("bc", "hello"), ("c", "hi"), ("d", "how are y
 lists  = [("example_list", ["value1", "value2"])]
 line = 0
 
+
 functions = [("exfunction", ["line1", "line2", "line3"])]
 
 
 is_Passing_Condition = True
 is_Declaring_Function = False
+
 
 def error(message):
     print("        \033[1m\033[91m   Focal Error  \033[0m        ")
@@ -25,11 +27,13 @@ def get_var_value(name):
     except:
         return name
 
+
 def get_var_name(value):
     try:
         return variables[[x for x, y in enumerate(variables) if y[1] == value][0]][0]
     except:
         return value
+
 
 def process_content(value):
     # Checking if the variable value corresponds to a variable name. If it does, it will use the
@@ -63,6 +67,7 @@ def process_content(value):
                     final_val = final_val + str(elem)
                 value = final_val
     return value
+
 
 def process_property(obj, property):
     if "uppercase" == property:
@@ -162,20 +167,11 @@ def execute(lines):
                         is_Declaring_Function = True
 
 
-
-
-
-
-
-
 def record_exec_time():
     import time
     start_time = time.time_ns() / (10 ** 9)
     execute(["declare a = Hey there", "print -> a","if (a = Hey there) {","print -> 5*7/7*10*67.65*7/7*10*67.6*7/7*10*67.6","}","declare b = testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest", "print -> b"])
     print("--- %s seconds ---" % (time.time_ns() / (10 ** 9) - start_time))
-
-
-
 
 
 if len(sys.argv) > 1:
@@ -185,4 +181,6 @@ if len(sys.argv) > 1:
         file = open(sys.argv[1], 'r')
         execute(file.readlines())
 else:
-    exit()
+    print("Focal ALPHA")
+    while True:
+        execute(input(">> ").split("||"))
