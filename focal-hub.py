@@ -12,7 +12,7 @@ selected = 1
 def starter_menu():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\033[35m"+"  Focal Hub 🏠     "+"\033[0m")
-    print("\033[36m      > Create starter file\033[0m")
+    print("\033[36m     > Create starter file\033[0m")
     print("    > Update Focal")
     print("    > Uninstall Focal")
 
@@ -20,17 +20,17 @@ def show_menu(key):
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\033[35m"+"  Focal Hub 🏠     "+"\033[0m")
     if key == 1:
-        print("\033[36m      > Create starter file\033[0m")
+        print("\033[36m     > Create starter file\033[0m")
         print("    > Update Focal")
         print("    > Uninstall Focal")
     elif key == 2:
         print("    > Create starter file")
-        print("\033[36m      > Update Focal\033[0m")
+        print("\033[36m     > Update Focal\033[0m")
         print("    > Uninstall Focal")
     elif key == 3:
         print("    > Create starter file")
         print("    > Update Focal")
-        print("\033[36m      > Uninstall Focal\033[0m")
+        print("\033[36m     > Uninstall Focal\033[0m")
 
 def up():
     global selected
