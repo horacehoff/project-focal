@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="index.css">
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+body {
+    background-color:#f5f4f9;
+    text-align: center;
+    width: 100%;
+}
+.title {
+    font-family: 'Dela Gothic One', cursive;
+    color:rgb(0, 0, 0);
+    font-size:5rem;
+    font-weight:900;
+    transition: .3s;
+}
+.search {
+    height: 3.5rem;
+    padding: 3.2px 24px;
+    margin: 0px;
+    border: 0;
+    outline: none;
+    width: 640px;
+    box-shadow:
+  0px 6.7px 5.3px rgba(0, 0, 0, 0.02),
+  0px 22.3px 17.9px rgba(0, 0, 0, 0.03),
+  0px 100px 80px rgba(0, 0, 0, 0.05)
+;
+    border-radius: 9px;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 700;
+}
+.content {
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.hover-spacing{
+    transition: .3s;
+}
+.hover-spacing:hover {
+    letter-spacing: 3px;
+}
+.search-result {
+    background-color: #fff;
+    width: 680px;
+    height: 100px;
+    border-radius: 9px;
+    position: absolute;
+    border: 0;
+    padding: 0;
+    display: none;
+    margin-top: 5px;
+    border:papayawhip;
+    border-width: 10px;
+    left: 10vw;
+}
+</style>
+<body>
+    <div class="content">
+        <h1 class="title"><a class="hover-spacing">Focal Modules</a></h1>
+        <input placeholder="Search a Focal module" class="search" oninput="searchmodule(this.value);" id="searchbar">
+        <div class="search-result" id="search-result"></div>
+    </div>
+</body>
+<script>
+    function searchmodule(value) {
+        console.log(value);
+        if (value) {
+            document.getElementById("search-result").style.display = "block";
+            document.getElementById("searchbar").style.boxShadow = "none";
+        } else {
+            document.getElementById("search-result").style.display = "none";
+        }
+    }
+</script>
+</html>
