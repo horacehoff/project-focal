@@ -7,7 +7,7 @@ lists  = [("example_list", ["value1", "value2"])]
 line = 0
 
 
-functions = [("exfunction", ["line1", "line2", "line3"])]
+functions = [("examplefunction", ["line1", "line2", "line3"])]
 
 
 is_Passing_Condition = True
@@ -55,6 +55,8 @@ def process_content(value):
     except:
         if "+" in value:
             for var in value.split("+"):
+                var = var.lstrip().rstrip()
+                print(var)
                 try:
                     value = value.replace(var, eval(var))
                 except:
@@ -90,6 +92,9 @@ def process_property(obj, property):
         return obj.rstrip()
     elif "title" == property:
         return obj.title()
+    elif "replace" == property[0]+property[1]+property[2]+property[3]+property[4]+property[5]+property[6]:
+        property = property.replace("replace","").replace("[","").replace("]","").split("->")
+        return obj.replace(property[0].rstrip(), replaced = property[1].lstrip())
     else:
         return obj+"."+property
 
@@ -130,6 +135,12 @@ def execute(lines):
                         except:
                             error("Invalid syntax when printing")
                         print(process_content(input.split("->")[1].lstrip()))
+                    elif "debug" in input.split(" ")[0]:
+                        try:
+                            assert "->" in input.split(" ")[1]
+                        except:
+                            error("Invalid syntax when printing")
+                        print("\33[31m[DEBUG] "+str(process_content(input.split("->")[1].lstrip()))+"\33[0m")
                     # Closing brackets
                     # To-Do: - Recognize wether the closing bracket closes a function declaration or a condition
                     elif "}" == input[0]:

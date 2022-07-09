@@ -226,7 +226,8 @@ vertical-align:baseline;
 white-space:nowrap;
 user-select:none;
 -webkit-user-select:none;
-touch-action:manipulation
+touch-action:manipulation;
+/* display: none; Remove on public release */
 }
 
 .get-started:hover {
@@ -264,4 +265,38 @@ height:360px
 
 .github-nav-text:hover {
 color:#7eabd4
+}
+
+.see-why {
+  background-color: #000000;
+  border: 0;
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: .75rem 1rem;
+  text-align: center;
+  text-decoration: none #000000 solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.see-why:hover {
+  background-color: rgb(17, 18, 18);
+}
+
+.see-why:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.see-why:focus-visible {
+  box-shadow: none;
 }
